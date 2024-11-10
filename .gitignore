@@ -1,4 +1,4 @@
 private/
 .venv/
-src/gdsplot/xor.gds2
-src/gdsplot/usage1.ipynb
+tests/xor.gds2
+tests/usage1.ipynb

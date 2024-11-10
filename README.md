@@ -9,6 +9,7 @@ Click a layer in the legend to hide, or double click a layer to hide all others.
 ```
 pip install gdsplot
 ```
+https://pypi.org/project/gdsplot/
 
 ## usage
 ```python

@@ -1,0 +1,9 @@
+LICENSE
+README.md
+pyproject.toml
+src/gdsplot/__init__.py
+src/gdsplot/_gdsplot.py
+src/gdsplot.egg-info/PKG-INFO
+src/gdsplot.egg-info/SOURCES.txt
+src/gdsplot.egg-info/dependency_links.txt
+src/gdsplot.egg-info/top_level.txt

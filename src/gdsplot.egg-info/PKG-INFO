@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: gdsplot
+Version: 0.0.1
+Summary: A package to turn gds/oas files into Plotly figures.
+Author-email: Carlton Duke <carltondukeatx@gmail.com>
+Project-URL: Homepage, https://github.com/carltonduke/gdsplot/
+Project-URL: Issues, https://github.com/carltonduke/gdsplot/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GPL-3.0 License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# gdsplot
+Turn a GDS or OAS file into a Plotly figure.
+
+![image](https://github.com/user-attachments/assets/08d173c3-93c1-4b93-bbfb-0645147982cf)
+
+
+## usage
+```python
+from _gdsplot import create_gdsplot
+
+fig = create_gdsplot(
+    file_path=file_path,
+    show_layers=True,
+    show_layers_legend=True
+)
+```
+
+## supported file types
+- .oas
+- .gds
+- .gds2
+
+## example gds files
+https://www.yzuda.org/download/_GDSII_examples.html
+

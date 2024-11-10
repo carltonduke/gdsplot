@@ -12,4 +12,9 @@ fig = create_gdsplot(
 )
 ```
 
+## supported file types
+- .oas
+- .gds
+- .gds2
+
 

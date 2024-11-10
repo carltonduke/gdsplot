@@ -32,19 +32,18 @@ class FileExtensionError(Exception):
         super().__init__(self.message)
 
 
-def create_gdsplot(file_path: str, 
-                   show_layers: bool = True, 
-                   show_layers_legend: bool = True) -> graph_objs.Figure:
+def create_gdsplot(
+                    file_path: str, 
+                    show_layers: bool = True, 
+                   ) -> graph_objs.Figure:
     """Create gdsplot. Pass path to layout file. 
-        show_layers = False to disable coloring by layer.datatypes available in layout file
-        show_layers_legend = False to hide layer based legend, requires show_layers
+        show_layers = False to disable coloring and legend by layer.datatypes available in layout file
 
         File types allowed: .gds, .gds2, .oas
     """
     return _Gdsplot(
         file_path=file_path,
         show_layers=show_layers,
-        show_layer_legend=show_layers_legend
     ).make_plot()
 
 
@@ -54,8 +53,7 @@ class _Gdsplot(object):
     def __init__(
         self,
         file_path: str,
-        show_layers: bool = True,
-        show_layer_legend: bool = True,
+        show_layers: bool,
     ):
         if not isfile(file_path):
             raise FileNotFoundError(file_path)
@@ -66,11 +64,6 @@ class _Gdsplot(object):
             self.show_layers = True
         else:
             self.show_layers = False
-
-        if show_layer_legend:
-            self.show_layers_legend = True
-        else:
-            self.show_layers_legend = False
 
         self.file_types_allowed = file_types_allowed
 
@@ -104,7 +97,7 @@ class _Gdsplot(object):
             for p in c.get_polygons():
                 polygons.append(p)
 
-        if self.show_layers or self.show_layers_legend:
+        if self.show_layers:
             layer_names = set()
             for pol in polygons:
                 layer_dtype = f"{pol.layer}.{pol.datatype}"
@@ -124,22 +117,18 @@ class _Gdsplot(object):
             for point in p.points:
                 x.append(float(point[0]))
                 y.append(float(point[1]))
-        
-            legend = False
-            if self.show_layers_legend:
-                if color not in layers_legend_map:
-                    layers_legend_map.add(color)
-                    legend = True
 
             layer_datatype = None
-            if self.show_layer or self.show_layers_legend:
-                layer_datatype = f"{p.layer}.{p.datatype}"
-            else:
-                color = None    
-            
+            legend = False
             fillcolor = None
-            if self.show_layers:
+            if self.show_layers or self.show_layers_legend:
+                layer_datatype = f"{p.layer}.{p.datatype}"
                 fillcolor = layer_color_map[layer_datatype]
+                if layer_datatype not in layers_legend_map:
+                    layers_legend_map.add(layer_datatype)
+                    legend = True
+            else:
+                layer_datatype = None
 
             data.append(
                 graph_objs.Scatter(

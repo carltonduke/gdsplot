@@ -20,4 +20,6 @@ fig = create_gdsplot(
 - .gds
 - .gds2
 
+## example gds files
+https://www.yzuda.org/download/_GDSII_examples.html
 

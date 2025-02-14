@@ -8,12 +8,9 @@ import distinctipy
 from typing import *
 from os.path import isfile, splitext
 
+__all__ = ['create_gdsplot']
 
-file_types_allowed = [
-            ".gds",
-            ".gds2",
-            ".oas"
-        ]
+file_types_allowed = [".gds",".gds2",".oas",".GDS",".OAS"]
 
 
 class FileExtensionError(Exception):
@@ -69,14 +66,22 @@ class _Gdsplot(object):
 
 
     def read_file(self) -> gdstk.Library:
-        """read layout file with gdstk and return library 
+        """Read layout file and return Library object.
+        Accepts [".gds", ".gds2", ".GDS"] and [".oas", ".OAS"]
+        as valid file extensions.
+
+        Raises:
+            FileExtensionError: Raised if file extension not valid.
+
+        Returns:
+            gdstk.Library: gdstk Library oject from layout file.
         """
         file_ext = splitext(self.file_path)[-1]
         if file_ext not in self.file_types_allowed:
             raise FileExtensionError(file_ext)
         
-        gds_ext = [".gds", ".gds2"]
-        oas_ext = [".oas"]
+        gds_ext = [".gds", ".gds2", ".GDS"]
+        oas_ext = [".oas", ".OAS"]
 
         library = gdstk.Library("lib")
         if file_ext in gds_ext:
@@ -88,7 +93,10 @@ class _Gdsplot(object):
     
 
     def make_plot(self) -> graph_objs.Figure:
-        """_summary_
+        """Make and return plotly plot.
+
+        Returns:
+            graph_objs.Figure: Plotly figure.
         """
         lib = self.read_file()
 
@@ -97,6 +105,7 @@ class _Gdsplot(object):
             for p in c.get_polygons():
                 polygons.append(p)
 
+        # create contrasting colorset for n layers
         if self.show_layers:
             layer_names = set()
             for pol in polygons:
@@ -118,6 +127,9 @@ class _Gdsplot(object):
                 x.append(float(point[0]))
                 y.append(float(point[1]))
 
+            # for all polys in a layer, only the first should have its legend
+            # showing, the others are added to the same legendgroup but their
+            # legends are not shown
             layer_datatype = None
             legend = False
             fillcolor = None
